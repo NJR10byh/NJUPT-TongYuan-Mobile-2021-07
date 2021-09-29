@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>新生文明素养测试</title>
+  <link rel="stylesheet" href="./css/Exam.css" />
+  <script src="./js/jquery.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.21.0/axios.js"></script>
+  <script src="./js/index.js"></script>
+</head>
+
+<body>
+  <div id="loginpage" class="container">
+    <div class="box">
+      <div id="topimg">
+        <img src="./img/NJUPT.jpeg" alt="请登录" width="60%" />
+      </div>
+      <div class="toptext">修德立品，修身立学</div>
+      <div class="toptext2">通信与信息工程学院 2021级</div>
+      <div class="toptext3">新生文明素养测试</div>
+      <div class="user">
+        <div class="username">
+          <img src="./img/username.png" width="20px" height="20px" />
+          <input type="text" placeholder="请输入姓名" id="name" onkeypress="if(event.keyCode==13) focusNextInput(this);" />
+        </div>
+        <div class="password">
+          <img src="./img/number.png" width="20px" height="20px" />
+          <input type="text" placeholder="请输入学号" id="number" onkeypress="if(event.keyCode==13) Tologin();" />
+        </div>
+      </div>
+      <button type="submit" onclick="Tologin()">
+        <img src="./img/Login.png" alt="登录" width="80px" height="80px" />
+      </button>
+      <div class="design">Designed by Xu-Zhiyuan & Bao-Yuhao in NJUPT</div>
+    </div>
+  </div>
+</body>
+
+</html>

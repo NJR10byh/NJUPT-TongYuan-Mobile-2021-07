@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>新生文明素养测试</title>
+  <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.21.0/axios.js"></script>
+  <style>
+    * {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    #Box {
+      /* border: 1px solid red; */
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: 0.8s;
+    }
+
+    #Box .inside {
+      /* border: 1px solid red; */
+      width: 80%;
+      height: auto;
+      padding: 6px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    #Box .inside p {
+      color: #000;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    #Box .inside #chance {
+      color: red;
+    }
+
+    #Box .inside #history1 {
+      margin-top: 3px;
+      color: #999;
+      font-size: 14px;
+      opacity: 0;
+      transition: 1s;
+    }
+
+    #Box .inside #history1info {
+      color: #000;
+      font-weight: bold;
+    }
+
+    #Box .inside button {
+      width: 40%;
+      height: 40px;
+      font-size: 20px;
+      font-weight: bold;
+      letter-spacing: 2px;
+      border: 0;
+      outline: none;
+      background-color: #17abe3;
+      border-radius: 5px;
+      padding: 0 0 0 2px;
+      color: #fff;
+    }
+
+    #Box .inside #download {
+      padding: 3px 6px;
+      margin-top: 10px;
+      border: 0;
+      font-weight: bold;
+      outline: none;
+      background-color: #17abe3;
+      letter-spacing: 1px;
+      border-radius: 5px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 13px;
+      opacity: 0;
+    }
+  </style>
+</head>
+
+<body onload="show()">
+  <div id="Box">
+    <div class="inside">
+      <button onclick="start()">开始答题</button>
+      <p>答题次数剩余: <span id="chance"></span> 次</p>
+      <p id="history1">最高分: <span id="history1info"></span> 分</p>
+      <a onclick="download()" id="download">下载证书</a>
+    </div>
+  </div>
+</body>
+<script>
+  var teacherId = "";
+  var chance = "";
+
+  function show() {
+    // console.log(location.href);
+    teacherId = location.href.split("=")[1];
+    axios
+      .post("http://1.117.224.204/teacher/queExamineCounter", {
+        teacherId: location.href.split("=")[1],
+      })
+      .then((res1) => {
+        chance = res1.data.data;
+        axios
+          .post("http://1.117.224.204/teacher/queScore", {
+            teacherId: teacherId,
+          })
+          .then((res2) => {
+            console.log(res2);
+            document.getElementById("history1info").innerHTML =
+              res2.data.data;
+            document.getElementById("history1").style.opacity = "1";
+            switch (true) {
+              case (res2.data.data >= 90 && res2.data.data < 95):
+                document.getElementById("download").style.opacity = "1";
+                document.getElementById("download").href = "https://gitee.com/nortonii/pqe-image/raw/master/mid-" + teacherId + ".jpg";
+                break;
+              case (res2.data.data >= 95):
+                document.getElementById("download").style.opacity = "1";
+                document.getElementById("download").href = "https://gitee.com/nortonii/pqe-image/raw/master/exc-" + teacherId + ".jpg";
+                break;
+              default:
+                break;
+            }
+          });
+        document.getElementById("chance").innerHTML = res1.data.data;
+      });
+    document.getElementById("Box").style.opacity = "1";
+  }
+
+  function start() {
+    document.getElementById("Box").style.opacity = "0";
+    setTimeout(() => {
+      let url =
+        "./Exam.html" +
+        "?" +
+        "teacherId=" +
+        teacherId +
+        "&" +
+        "chance=" +
+        chance;
+      window.location.replace(url);
+    }, 800);
+    if (chance == 0) {
+      if (confirm("您可以继续答题，但是成绩不会提交，要继续吗？")) {
+        document.getElementById("Box").style.opacity = "0";
+        setTimeout(() => {
+          let url =
+            "./Exam.html" +
+            "?" +
+            "teacherId=" +
+            teacherId +
+            "&" +
+            "chance=" +
+            chance;
+          window.location.replace(url);
+        }, 800);
+      } else {
+        return false;
+      }
+    } else {
+      document.getElementById("Box").style.opacity = "0";
+      setTimeout(() => {
+        let url =
+          "./Exam.html" +
+          "?" +
+          "teacherId=" +
+          teacherId +
+          "&" +
+          "chance=" +
+          chance;
+        window.location.replace(url);
+      }, 800);
+    }
+  }
+</script>
+
+</html>
